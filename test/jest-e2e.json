@@ -1,0 +1,16 @@
+{
+  "moduleFileExtensions": ["js", "json", "ts"],
+  "rootDir": ".",
+  "testEnvironment": "node",
+  "testRegex": ".e2e-spec.ts$",
+  "transform": {
+    "^.+\\.(t|j)s$": "ts-jest"
+  },
+  "transformIgnorePatterns": ["^.+\\.js$"],
+  "moduleNameMapper": {
+    "@config": "D:/projects/assets-manager/src/config",
+    "@global": "D:/projects/assets-manager/src/global",
+    "@features": "D:/projects/assets-manager/src/features",
+    "@common": "D:/projects/assets-manager/src/common"
+  }
+}
