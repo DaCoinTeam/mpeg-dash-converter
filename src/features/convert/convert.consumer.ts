@@ -1,7 +1,7 @@
 import { Job } from "bull"
 import { OnQueueError, Process, Processor } from "@nestjs/bull"
 import { ProcessService } from "@global"
-import { TaskInfo } from "@common"
+import { Metadata } from "@common"
 
 @Processor("tasks")
 export default class ConvertConsumer {
@@ -10,7 +10,7 @@ export default class ConvertConsumer {
     ) {}
 
     @Process()
-    async process(job: Job<TaskInfo>) {
+    async process(job: Job<Metadata>) {
         await this.processService.processVideo(job.data)
         return {}
     }

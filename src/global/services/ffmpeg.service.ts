@@ -1,7 +1,7 @@
 import { Injectable } from "@nestjs/common"
 import ffmpeg from "fluent-ffmpeg"
 import { join } from "path"
-import videoConfig from "src/config/video.config"
+import { videoConfig } from "@config"
 
 @Injectable()
 export default class FfmpegService {
@@ -35,9 +35,9 @@ export default class FfmpegService {
         })
     }
 
-    async encodeAtMultipleBitrates(taskId: string, videoName: string) {
-        const videoPath = join("tasks", taskId, videoName)
-        const outputDir = join("tasks", taskId)
+    async encodeAtMultipleBitrates(assetId: string, videoName: string) {
+        const videoPath = join("tasks", assetId, videoName)
+        const outputDir = join("tasks", assetId)
         const videoInfos = videoConfig().videoInfos
         const profiles: EncodeProfile[] = [
             {

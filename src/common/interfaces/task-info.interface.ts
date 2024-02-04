@@ -1,4 +1,4 @@
 export default interface TaskInfo {
-    taskId: string,
+    assetId: string,
     videoName: string
 }

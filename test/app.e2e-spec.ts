@@ -3,6 +3,7 @@ import { ClientProxy, ClientsModule, Transport } from "@nestjs/microservices"
 import { TestingModule, Test } from "@nestjs/testing"
 import AppModule from "../src/app.module"
 import { lastValueFrom } from "rxjs"
+import { readFileSync } from "fs"
 
 describe("App", () => {
     let app: INestApplication
@@ -49,11 +50,13 @@ describe("App", () => {
     //     })
     // })
 
-    describe("Test get", () => {
+    describe("Test upload", () => {
         it("Should get success", async () => {
+            const abc = readFileSync("video.mkv")
             const res = await lastValueFrom(client
-                .send("get", {
-                    assetIdOrPath: "cd3420d1-692e-4353-b129-33a411c17c70",
+                .send("convert", {
+                    fileName: "video.mkv",
+                    fileBody: abc,
                 }))
             console.log(res)
         })

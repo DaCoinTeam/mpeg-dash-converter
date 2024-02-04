@@ -21,7 +21,7 @@ export default class AssetsManagerService implements OnModuleInit {
         })
     }
 
-    async upload(data: SerializableFile) {
-        return await lastValueFrom(this.client.send<Metadata>("upload", data))
+    async upload(file: SerializableFile) {
+        return await lastValueFrom(this.client.send<Metadata>("upload", file))
     }
 }

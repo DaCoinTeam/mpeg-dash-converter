@@ -6,6 +6,7 @@ import { FeaturesModule } from "@features"
 import videoConfig from "./config/video.config"
 import { BullModule } from "@nestjs/bull"
 
+
 @Module({
     imports: [
         BullModule.forRoot({
@@ -27,7 +28,6 @@ import { BullModule } from "@nestjs/bull"
         FeaturesModule,
     ],
     controllers: [],
-    providers: [
-    ],
+    providers: []
 })
 export default class AppModule {}

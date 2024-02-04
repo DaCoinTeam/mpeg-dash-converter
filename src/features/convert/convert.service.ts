@@ -10,9 +10,11 @@ export default class ConvertService {
         private readonly processService: ProcessService,
         @InjectQueue("convert") private readonly convertQueue: Queue
     ) {}
-
+    
     async convert(input: ConvertInput) {
         const taskInfo = await this.processService.createTask(input)
         await this.convertQueue.add(taskInfo)
+        //await this.processService.processVideo(taskInfo)
+        return taskInfo
     }
 }

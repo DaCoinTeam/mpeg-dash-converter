@@ -8,9 +8,9 @@
   },
   "transformIgnorePatterns": ["^.+\\.js$"],
   "moduleNameMapper": {
-    "@config": "D:/projects/assets-manager/src/config",
-    "@global": "D:/projects/assets-manager/src/global",
-    "@features": "D:/projects/assets-manager/src/features",
-    "@common": "D:/projects/assets-manager/src/common"
+    "@config": "D:/projects/mpeg-dash-converter/src/config",
+    "@global": "D:/projects/mpeg-dash-converter/src/global",
+    "@features": "D:/projects/mpeg-dash-converter/src/features",
+    "@common": "D:/projects/mpeg-dash-converter/src/common"
   }
 }
