@@ -1,5 +1,5 @@
 import { Global, Module } from "@nestjs/common"
-import { AssetsManagerService, Bento4Service, CommandService, FfmpegSerivce, ProcessService } from "./services"
+import { AssetsManagerService, Bento4Service, FfmpegSerivce, ProcessService } from "./services"
 
 @Global()
 @Module({
@@ -7,14 +7,12 @@ import { AssetsManagerService, Bento4Service, CommandService, FfmpegSerivce, Pro
     exports: [
         AssetsManagerService,
         Bento4Service,
-        CommandService,
         FfmpegSerivce,
         ProcessService
     ],
     providers: [
         AssetsManagerService,
         Bento4Service,
-        CommandService,
         FfmpegSerivce,
         ProcessService
     ],

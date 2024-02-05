@@ -66,7 +66,6 @@ export default class FfmpegService {
                 ...videoInfos["240.mp4"]
             },
         ]
-
         const promises: Promise<void>[] = []
         for (const profile of profiles) {
             const promise = async () => {
@@ -77,7 +76,7 @@ export default class FfmpegService {
 
         await Promise.all(promises)
     }
-}
+} 
 
 interface EncodeProfile {
   inputPath: string;

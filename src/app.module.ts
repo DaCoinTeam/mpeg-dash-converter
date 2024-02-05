@@ -1,10 +1,11 @@
 import { Module } from "@nestjs/common"
 import { ConfigModule } from "@nestjs/config"
 import { servicesConfig } from "@config"
-import { GlobalModule } from "@global"
+import { ExceptionFilter, GlobalModule } from "@global"
 import { FeaturesModule } from "@features"
 import videoConfig from "./config/video.config"
 import { BullModule } from "@nestjs/bull"
+import { APP_FILTER } from "@nestjs/core"
 
 
 @Module({
@@ -15,11 +16,6 @@ import { BullModule } from "@nestjs/bull"
                 port: 6379,
             }
         }), 
-        BullModule.registerQueue(
-            {
-                name: "tasks",
-            }
-        ),
         ConfigModule.forRoot({
             load: [servicesConfig, videoConfig],
         }),
@@ -28,6 +24,11 @@ import { BullModule } from "@nestjs/bull"
         FeaturesModule,
     ],
     controllers: [],
-    providers: []
+    providers: [
+        {
+            provide: APP_FILTER,
+            useClass: ExceptionFilter
+        }
+    ]
 })
 export default class AppModule {}

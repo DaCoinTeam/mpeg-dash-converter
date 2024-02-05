@@ -22,6 +22,16 @@ export default class AssetsManagerService implements OnModuleInit {
     }
 
     async upload(file: SerializableFile) {
-        return await lastValueFrom(this.client.send<Metadata>("upload", file))
+        return await lastValueFrom(this.client.send<Metadata>("upload",
+            file
+        ))
+    }
+
+    async uploadExisted(file: SerializableFile, dir: string, overrideMetadata: boolean = false) {
+        return await lastValueFrom(this.client.send("upload-existed",
+            {
+                file, dir, overrideMetadata
+            }
+        ))
     }
 }

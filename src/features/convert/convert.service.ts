@@ -12,9 +12,9 @@ export default class ConvertService {
     ) {}
     
     async convert(input: ConvertInput) {
-        const taskInfo = await this.processService.createTask(input)
-        await this.convertQueue.add(taskInfo)
-        //await this.processService.processVideo(taskInfo)
-        return taskInfo
+        const metadata = await this.processService.createTask(input)
+        await this.convertQueue.add(metadata)
+        //await this.processService.processVideo(metadata)
+        return metadata
     }
 }
