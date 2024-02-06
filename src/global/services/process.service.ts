@@ -1,4 +1,4 @@
-import { Metadata, SerializableFile } from "@common"
+import { FileAndSubdirectory, Metadata, SerializableFile } from "@common"
 import { Injectable, Logger } from "@nestjs/common"
 import { RpcException } from "@nestjs/microservices"
 import { promises as fsPromise } from "fs"
@@ -8,6 +8,8 @@ import Bento4Service from "./bento4.service"
 import { videoConfig } from "@config"
 import { validate as validateUuidv4 } from "uuid"
 import AssetsManagerService from "./assets-manager.service"
+
+const MANIFEST_FILE_NAME = "manifest.mpd"
 
 @Injectable()
 export default class ProcessService {
@@ -33,7 +35,10 @@ export default class ProcessService {
         return metadata
     }
 
-    private async uploadMpegDashManifestRecusive(path: string, sendPath: string, insideNonRootDir: boolean = true) {
+    private async uploadMpegDashManifestRecusive(path: string,
+        fileAndSubdirectories: Array<FileAndSubdirectory> = [],
+        sendPath?: string,
+        insideNonRootDir: boolean = true) {
         const name = basename(path)
         const stat = await fsPromise.stat(path)
         if (stat.isDirectory()) {
@@ -42,28 +47,36 @@ export default class ProcessService {
                 const childNames = await fsPromise.readdir(path)
                 for (const childName of childNames) {
                     const childPath = join(path, childName)
-                    const childSendPath = join(sendPath, childName)
-                    await this.uploadMpegDashManifestRecusive(childPath, childSendPath, isRoot)
+                    const childSendPath = sendPath ? join(sendPath, childName) : childName
+                    await this.uploadMpegDashManifestRecusive(childPath, fileAndSubdirectories, childSendPath, isRoot)
                 }
             }
         } else {
-            const isManifest = name === "manifest.mpd"
+            const isManifest = name === MANIFEST_FILE_NAME
             if (!insideNonRootDir || isManifest) {
                 const fileBody = await fsPromise.readFile(path)
-                await this.assetsManagerService.uploadExisted({
-                    fileName: name,
-                    fileBody
-                },
-                dirname(sendPath),
-                isManifest
-                )
-            }
+                fileAndSubdirectories.push({
+                    file: {
+                        fileName: name,
+                        fileBody
+                    },
+                    subdir: !isManifest ? dirname(sendPath) : undefined
+                })
+            } 
         }
     }
     private async uploadMpegDashManifest(assetId: string) {
+        const fileAndSubdirectories: Array<FileAndSubdirectory> = []
         const path = join(process.cwd(), "tasks", assetId)
-        await this.uploadMpegDashManifestRecusive(path, assetId)
-    }
+        await this.uploadMpegDashManifestRecusive(path, fileAndSubdirectories)
+        console.log(fileAndSubdirectories)
+        await this.assetsManagerService.update(assetId, fileAndSubdirectories)
+        await this.assetsManagerService.uploadMetadata({
+            assetId,
+            fileName: MANIFEST_FILE_NAME,
+            extname: extname(MANIFEST_FILE_NAME)
+        })
+    } 
 
     private async cleanUp(assetId: string) {
         const path = join(process.cwd(), "tasks", assetId)

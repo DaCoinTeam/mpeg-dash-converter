@@ -1,4 +1,4 @@
-import { Metadata, SerializableFile } from "@common"
+import { FileAndSubdirectory, Metadata, SerializableFile } from "@common"
 import { servicesConfig } from "@config"
 import { Injectable, OnModuleInit } from "@nestjs/common"
 import {
@@ -27,11 +27,16 @@ export default class AssetsManagerService implements OnModuleInit {
         ))
     }
 
-    async uploadExisted(file: SerializableFile, dir: string, overrideMetadata: boolean = false) {
-        return await lastValueFrom(this.client.send("upload-existed",
+    async update(assetId: string, fileAndSubdirectories: FileAndSubdirectory[]) {
+        await lastValueFrom(this.client.send("update",
             {
-                file, dir, overrideMetadata
+                assetId, fileAndSubdirectories
             }
         ))
     }
+
+    async uploadMetadata(metadata: Metadata) {
+        await lastValueFrom(this.client.send("upload-metadata", metadata))
+    }
 }
+  

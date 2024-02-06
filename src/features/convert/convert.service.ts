@@ -17,4 +17,4 @@ export default class ConvertService {
         //await this.processService.processVideo(metadata)
         return metadata
     }
-}
+} 
