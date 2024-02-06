@@ -69,7 +69,6 @@ export default class ProcessService {
         const fileAndSubdirectories: Array<FileAndSubdirectory> = []
         const path = join(process.cwd(), "tasks", assetId)
         await this.uploadMpegDashManifestRecusive(path, fileAndSubdirectories)
-        console.log(fileAndSubdirectories)
         await this.assetsManagerService.update(assetId, fileAndSubdirectories)
         await this.assetsManagerService.uploadMetadata({
             assetId,
